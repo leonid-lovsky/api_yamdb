@@ -1,10 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
-from ..users.models import CustomUser
+from django.contrib.auth import get_user_model
 
 NUMBER_OF_SYMBOLS = 20
-User = CustomUser
+User = get_user_model()
 
 
 class Category(models.Model):
