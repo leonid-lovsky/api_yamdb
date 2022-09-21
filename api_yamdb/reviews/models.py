@@ -64,7 +64,7 @@ class Comments(models.Model):
     title = models.ForeignKey(
         Title,
         related_name='comments',
-        verbose_name='Наименование произведения'
+        verbose_name='Наименование произведения',
         on_delete=models.CASCADE,
         null=True
     )
@@ -78,10 +78,10 @@ class Comments(models.Model):
         verbose_name='Текст комментария'
     )
     author = models.ForeignKey(
-        'User',
+        User,
         related_name='comments',
         verbose_name='Автор комментария',
-         on_delete=models.CASCADE
+        on_delete=models.CASCADE
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
@@ -95,4 +95,3 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.text[:NUMBER_OF_SYMBOLS]
-        
