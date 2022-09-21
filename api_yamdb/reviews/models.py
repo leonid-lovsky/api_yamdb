@@ -1,6 +1,29 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
+from ..users.models import CustomUser
+
+NUMBER_OF_SYMBOLS = 20
+User = CustomUser
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=256)
+    slug = models.SlugField(max_length=50, unique=True)
+
+
+class Genre(models.Model):
+    name = models.CharField(max_length=256)
+    slug = models.SlugField(max_length=50, unique=True)
+
+
+class Title(models.Model):
+    name = models.CharField(max_length=256)
+    year = models.DateTimeField(auto_now_add=True)
+    description = models.TextField()
+    genre = models.ManyToManyField(Genre, related_name='titles')
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, related_name='titles', null=True)
 
 
 class Review(models.Model):
@@ -29,14 +52,13 @@ class Review(models.Model):
         null=True
     )
 
-
     class Meta:
         ordering = ('-pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
 
     def __str__(self):
-        return self.text[:20]
+        return self.text[:NUMBER_OF_SYMBOLS]
 
 
 class Comments(models.Model):
@@ -73,7 +95,5 @@ class Comments(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return self.text[:20]
-
-
-
+        return self.text[:NUMBER_OF_SYMBOLS]
+        
