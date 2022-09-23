@@ -1,3 +1,4 @@
+from typing_extensions import Required
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -19,6 +20,7 @@ class CustomUser(AbstractUser):
         null=False,
         blank=False
     )
+    email = models.EmailField(unique=True),
     role = models.CharField(
         'Роль пользователя',
         max_length=20,
