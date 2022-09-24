@@ -52,6 +52,11 @@ class TitleViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('category__slug', 'genre__slug', 'name', 'year',)
 
+    def get_queryset(self):
+        return Title.objects.annotate(
+            rating=django_models.Avg('reviews__rating')
+        ).order_by('-avg_rating')
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
@@ -67,11 +72,6 @@ class ReviewViewSet(viewsets.ModelViewSet):
         title = get_object_or_404(Title, pk=title_id)
         user = self.request.user
         serializer.save(author=user, title=title)
-
-    def get_queryset(self):
-        return models.Title.objects.annotate(
-            rating=django_models.Avg('reviews__rating')
-        ).order_by('-avg_rating')
 
 
 class CommentViewSet(viewsets.ModelViewSet):
