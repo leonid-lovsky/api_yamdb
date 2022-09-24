@@ -55,12 +55,12 @@ class TitleViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Title.objects.annotate(
             rating=django_models.Avg('reviews__rating')
-        ).order_by('-avg_rating')
+        ).order_by('-rating')
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         title_id = self.kwargs.get('title_id')
@@ -76,7 +76,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentsSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         title_id = self.kwargs.get('title_id')
