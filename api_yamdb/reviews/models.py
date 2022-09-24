@@ -132,6 +132,13 @@ class Comments(models.Model):
         related_name='comments',
         on_delete=models.CASCADE,
     )
+    title = models.ForeignKey(
+        'Titles',
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Произведение',
+        null=False
+    )
 
     class Meta:
         ordering = ('-pub_date',)
