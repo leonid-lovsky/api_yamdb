@@ -58,7 +58,7 @@ class RegistrationAPIView(APIView):
         user = serializer.save()
         email_info = (
             f'Здравствуйте {user.username}'
-            f'\nДля заверешения регистрации вам необходимо указать проверочный код:'
+            f'\n Ваш проверочный код для завершения регистрации:'
             f'{user.confirmation_code}'
         )
         data = {
