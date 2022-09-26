@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
@@ -6,15 +7,17 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from api.permissions import IsAdminOrReadOnly
+from api.permissions import IsAdminOrReadOnly, IsAdmin
 from reviews.models import Title, Review, Comments, Category, Genre
 from .serializers import (
     ReviewSerializer,
     CommentsSerializer,
     CategorySerializer,
     TitleSerializer,
-    GenreSerializer,
+    GenreSerializer, UserSerializer,
 )
+
+User = get_user_model()
 
 
 class CategoryViewSet(mixins.CreateModelMixin,
@@ -94,3 +97,13 @@ class CommentViewSet(viewsets.ModelViewSet):
         title = get_object_or_404(Title, pk=title_id)
         review = get_object_or_404(Review, pk=review_id)
         serializer.save(author=self.request.user, title=title, review=review)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (IsAdmin,)
+    pagination_class = LimitOffsetPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('username',)
+    lookup_field = 'username'

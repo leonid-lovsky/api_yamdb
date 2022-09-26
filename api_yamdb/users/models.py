@@ -15,15 +15,6 @@ class CustomUser(AbstractUser):
     username = models.CharField(
         max_length=150,
         unique=True,
-        null=False,
-        blank=False
-    )
-    role = models.CharField(
-        'Роль пользователя',
-        max_length=20,
-        choices=USER_ROLE_CHOICES,
-        default=USER,
-        blank=True,
     )
     email = models.EmailField(
         verbose_name='Email',
@@ -33,7 +24,19 @@ class CustomUser(AbstractUser):
     bio = models.TextField(
         verbose_name='О пользователе',
         help_text='Расскажите о себе',
+        blank=True,
         null=True
+    )
+    role = models.CharField(
+        'Роль пользователя',
+        max_length=20,
+        choices=USER_ROLE_CHOICES,
+        default=USER,
+        blank=True,
+    )
+    confirm_code = models.CharField(
+        max_length=100,
+        blank=True
     )
 
     @property
