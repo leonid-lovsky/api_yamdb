@@ -15,14 +15,25 @@ class User(AbstractUser):
         (USER, 'user'),
     ]
 
-    bio = models.TextField(
-        'Биография',
-        blank=True,
-    )
-
     confirmation_code = models.CharField(
         max_length=100,
         blank=True
+    )
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+    )
+    email = models.EmailField(
+        verbose_name='Email',
+        help_text='Введите адрес эл.почты',
+        unique=True
+    )
+    bio = models.TextField(
+        'Биография',
+        verbose_name='О пользователе',
+        help_text='Расскажите о себе',
+        blank=True,
+        null=True
     )
 
     role = models.CharField(
@@ -33,6 +44,21 @@ class User(AbstractUser):
         blank=True,
     )
 
+    @property
+    def is_user(self):
+        return self.role == self.USER
+
+    @property
+    def is_moderator(self):
+        return self.role == self.MODERATOR
+
+    @property
+    def is_admin(self):
+        return self.role == self.ADMIN or self.is_staff
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
