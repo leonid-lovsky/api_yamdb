@@ -1,6 +1,8 @@
-from typing_extensions import Required
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.tokens import default_token_generator
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class CustomUser(AbstractUser):
@@ -8,19 +10,21 @@ class CustomUser(AbstractUser):
     MODERATOR = 'moderator'
     USER = 'user'
     USER_ROLE_CHOICES = [
-        (ADMIN, 'Администратор'),
-        (MODERATOR, 'Модератор'),
-        (USER, 'Пользователь')
+        (ADMIN, 'admin'),
+        (MODERATOR, 'moderator'),
+        (USER, 'user'),
     ]
 
-    username = models.CharField(
-        # validators=(validate_username,), TO DO
-        max_length=150,
-        unique=True,
-        null=False,
-        blank=False
+    bio = models.TextField(
+        'Биография',
+        blank=True,
     )
-    email = models.EmailField(unique=True),
+
+    confirm_code = models.CharField(
+        max_length=100,
+        blank=True
+    )
+
     role = models.CharField(
         'Роль пользователя',
         max_length=20,
@@ -29,5 +33,12 @@ class CustomUser(AbstractUser):
         blank=True,
     )
 
-    def __str__(self) -> str:
-        return self.username
+
+@receiver(post_save, sender=CustomUser)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        confirm_code = default_token_generator.make_token(
+            instance
+        )
+        instance.confirm_code = confirm_code
+        instance.save()

@@ -133,7 +133,7 @@ class Comments(models.Model):
         on_delete=models.CASCADE,
     )
     title = models.ForeignKey(
-        'Titles',
+        Title,
         on_delete=models.CASCADE,
         related_name='comments',
         verbose_name='Произведение',
