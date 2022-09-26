@@ -107,6 +107,11 @@ class Review(models.Model):
         ordering = ('-pub_date',)
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'author'], name='unique review'
+            )
+        ]
 
     def __str__(self):
         return self.text[:NUMBER_OF_SYMBOLS]
