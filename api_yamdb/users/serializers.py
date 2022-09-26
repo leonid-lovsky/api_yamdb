@@ -1,21 +1,21 @@
 from rest_framework import serializers
 
-from .models import CustomUser
+from .models import User
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
     """ Сериализация регистрации пользователя и создания нового. """
 
     class Meta:
-        model = CustomUser
+        model = User
         fields = ['email', 'username']
 
 
 class GetTokenSerializer(serializers.ModelSerializer):
     """ Сериализация выдачи пользователю токена. """
     username = serializers.CharField()
-    confirm_code = serializers.CharField()
+    confirmation_code = serializers.CharField()
 
     class Meta:
-        model = CustomUser
-        fields = ['username', 'confirm_code']
+        model = User
+        fields = ['username', 'confirmation_code']

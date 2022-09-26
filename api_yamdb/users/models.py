@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     ADMIN = 'admin'
     MODERATOR = 'moderator'
     USER = 'user'
@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
         blank=True,
     )
 
-    confirm_code = models.CharField(
+    confirmation_code = models.CharField(
         max_length=100,
         blank=True
     )
@@ -34,11 +34,11 @@ class CustomUser(AbstractUser):
     )
 
 
-@receiver(post_save, sender=CustomUser)
+@receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
-        confirm_code = default_token_generator.make_token(
+        confirmation_code = default_token_generator.make_token(
             instance
         )
-        instance.confirm_code = confirm_code
+        instance.confirmation_code = confirmation_code
         instance.save()
