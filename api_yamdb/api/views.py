@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Avg
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import CharFilter
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from rest_framework import filters, mixins, viewsets
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404
@@ -14,7 +15,8 @@ from .serializers import (
     CommentsSerializer,
     CategorySerializer,
     TitleSerializer,
-    GenreSerializer, UserSerializer,
+    GenreSerializer,
+    UserSerializer,
 )
 
 User = get_user_model()
@@ -46,13 +48,23 @@ class GenreViewSet(mixins.CreateModelMixin,
     lookup_field = 'slug'
 
 
+class TitleFilter(FilterSet):
+    genre = CharFilter(lookup_expr='slug')
+    category = CharFilter(lookup_expr='slug')
+    name = CharFilter(lookup_expr='contains')
+
+    class Meta:
+        model = Title
+        fields = ('genre', 'category', 'year', 'name',)
+
+
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     serializer_class = TitleSerializer
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = LimitOffsetPagination
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('category__slug', 'genre__slug', 'name', 'year',)
+    filterset_class = TitleFilter
 
     def get_queryset(self):
         return Title.objects.annotate(
