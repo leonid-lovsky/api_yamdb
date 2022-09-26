@@ -82,7 +82,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         IsAuthorModeratorAdminOrReadOnly,
         IsAuthenticatedOrReadOnly
     )
-    # pagination_class = LimitOffsetPagination
+    pagination_class = LimitOffsetPagination
     filter_backends = set()
 
     def get_queryset(self):
@@ -103,7 +103,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         IsAuthorModeratorAdminOrReadOnly,
         IsAuthenticatedOrReadOnly
     )
-    # pagination_class = LimitOffsetPagination
+    pagination_class = LimitOffsetPagination
     filter_backends = set()
 
     def get_queryset(self):
