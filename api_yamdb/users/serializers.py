@@ -1,6 +1,10 @@
 from rest_framework import serializers
 
 from .models import User
+from api_yamdb.settings import (
+    RESERVED_NAME,
+    MESSAGE_FOR_RESERVED_NAME
+)
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -9,6 +13,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'username']
+
+    def validate_username(self, value):
+        if value == RESERVED_NAME:
+            raise serializers.ValidationError(MESSAGE_FOR_RESERVED_NAME)
+        return value
 
 
 class GetTokenSerializer(serializers.ModelSerializer):
