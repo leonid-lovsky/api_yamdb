@@ -3,11 +3,15 @@ from django.db.models import Avg
 from django_filters import CharFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from rest_framework import filters, mixins, viewsets
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly,
+    IsAuthenticated
+)
+from rest_framework.response import Response
 from api.permissions import (
     IsAdminOrReadOnly,
     IsAdmin,
@@ -129,3 +133,21 @@ class UserViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
     lookup_field = 'username'
+
+    @action(
+        methods=['patch', 'get'],
+        detail=False,
+        url_path='me',
+        url_name='me',
+        permission_classes=[IsAuthenticated]
+    )
+    def get_me(self, request):
+        user = self.request.user
+        serializer = self.get_serializer(user)
+        if self.request.method == 'PATCH':
+            serializer = self.get_serializer(
+                user, data=request.data, partial=True
+            )
+            if serializer.is_valid():
+                serializer.save()
+        return Response(serializer.data)
