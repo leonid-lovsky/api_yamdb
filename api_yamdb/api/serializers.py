@@ -15,35 +15,50 @@ class UserSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'slug',)
+        fields = (
+            'name',
+            'slug',
+        )
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ('name', 'slug',)
+        fields = (
+            'name',
+            'slug',
+        )
 
 
 class TitleSerializer(serializers.ModelSerializer):
-    rating = serializers.IntegerField()
+    rating = serializers.IntegerField(read_only=True)
     description = serializers.CharField(
-        allow_blank=True, required=False
+        allow_blank=True,
+        required=False
     )
     genre = serializers.SlugRelatedField(
-        slug_field='slug', required=True, many=True,
+        slug_field='slug',
+        required=True,
+        many=True,
         queryset=Genre.objects.all()
     )
     category = serializers.SlugRelatedField(
-        slug_field='slug', required=True,
+        slug_field='slug',
+        required=True,
         queryset=Category.objects.all()
     )
 
     class Meta:
         model = Title
         fields = (
-            'id', 'name', 'year', 'rating', 'description', 'genre', 'category',
+            'id',
+            'name',
+            'year',
+            'rating',
+            'description',
+            'genre',
+            'category',
         )
-        read_only_fields = ('rating',)
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
@@ -64,7 +79,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             'text',
             'author',
             'score',
-            'pub_date'
+            'pub_date',
         )
         model = Review
 
@@ -91,6 +106,6 @@ class CommentsSerializer(serializers.ModelSerializer):
             'id',
             'text',
             'author',
-            'pub_date'
+            'pub_date',
         )
         model = Comments
