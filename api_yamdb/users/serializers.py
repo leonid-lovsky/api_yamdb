@@ -13,6 +13,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
 class GetTokenSerializer(serializers.ModelSerializer):
     """ Сериализация выдачи пользователю токена. """
+    username = serializers.CharField()
+    confirm_code = serializers.CharField()
 
     class Meta:
         model = CustomUser

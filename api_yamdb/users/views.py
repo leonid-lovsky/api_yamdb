@@ -29,8 +29,7 @@ class GetTokenAPIView(APIView):
             token = RefreshToken.for_user(user).access_token
             return Response(
                 {'token': str(token)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+                status=status.HTTP_201_CREATED)
         return Response(
             {'conirm_code': 'Предоставлен неверный код подтверждения'},
             status=status.HTTP_400_BAD_REQUEST
