@@ -45,7 +45,7 @@ class Command(BaseCommand):
 
     def import_db(self, table, file_path):
         # counter = 0
-        with open(file_path) as file:
+        with open(file_path, encoding="utf8") as file:
             reader = csv.reader(file)
             columns = next(reader)
             for row in reader:
