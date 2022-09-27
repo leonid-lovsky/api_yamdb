@@ -92,6 +92,6 @@ class UserSerializer(serializers.ModelSerializer):
         if 'role' not in self.initial_data:
             return super().update(instance, validated_data)
         user = self.context['request'].user
-        if not bool(user.is_admin or user.is_moderator):
+        if not user.is_admin:
             validated_data.pop('role')
         return super().update(instance, validated_data)
