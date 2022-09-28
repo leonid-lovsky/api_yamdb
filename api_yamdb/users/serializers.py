@@ -16,7 +16,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate_username(self, value):
         if value == settings.RESERVED_NAME:
-            raise serializers.ValidationError(settings.MESSAGE_FOR_RESERVED_NAME)
+            raise serializers.ValidationError(
+                settings.MESSAGE_FOR_RESERVED_NAME
+            )
         return value
 
 

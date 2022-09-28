@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Avg
-from django_filters import CharFilter
-from django_filters.rest_framework import DjangoFilterBackend, FilterSet
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
@@ -37,7 +36,9 @@ class MyCastomBaseViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet):
+    viewsets.GenericViewSet
+):
+
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = PagePagination
     filter_backends = (SearchFilter,)

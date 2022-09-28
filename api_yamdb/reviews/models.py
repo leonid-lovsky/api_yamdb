@@ -7,6 +7,7 @@ from django.db import models
 NUMBER_OF_SYMBOLS = 20
 User = get_user_model()
 
+
 def validate_year(value):
     if value > datetime.datetime.now().year:
         raise ValidationError(
