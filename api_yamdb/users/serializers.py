@@ -1,10 +1,7 @@
 from rest_framework import serializers
 
 from .models import User
-from api_yamdb.settings import (
-    RESERVED_NAME,
-    MESSAGE_FOR_RESERVED_NAME
-)
+from api_yamdb import settings
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -15,8 +12,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = ['email', 'username']
 
     def validate_username(self, value):
-        if value == RESERVED_NAME:
-            raise serializers.ValidationError(MESSAGE_FOR_RESERVED_NAME)
+        if value == settings.RESERVED_NAME:
+            raise serializers.ValidationError(settings.MESSAGE_FOR_RESERVED_NAME)
         return value
 
 

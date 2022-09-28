@@ -27,29 +27,16 @@ from .serializers import (
     GenreSerializer,
     UserSerializer,
 )
+from .filters import TitleFilter
 
 User = get_user_model()
 
 
-class CategoryViewSet(mixins.CreateModelMixin,
-                      mixins.DestroyModelMixin,
-                      mixins.ListModelMixin,
-                      viewsets.GenericViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = (IsAdminOrReadOnly,)
-    pagination_class = LimitOffsetPagination
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('name',)
-    lookup_field = 'slug'
-
-
-class GenreViewSet(mixins.CreateModelMixin,
-                   mixins.DestroyModelMixin,
-                   mixins.ListModelMixin,
-                   viewsets.GenericViewSet):
-    queryset = Genre.objects.all()
-    serializer_class = GenreSerializer
+class MyCastomBaseViewSet(
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = LimitOffsetPagination
     filter_backends = (SearchFilter,)
@@ -57,18 +44,17 @@ class GenreViewSet(mixins.CreateModelMixin,
     lookup_field = 'slug'
 
 
-class TitleFilter(FilterSet):
-    genre = CharFilter(lookup_expr='slug')
-    category = CharFilter(lookup_expr='slug')
-    name = CharFilter(lookup_expr='contains')
+class CategoryViewSet(MyCastomBaseViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
-    class Meta:
-        model = Title
-        fields = ('genre', 'category', 'year', 'name',)
+
+class GenreViewSet(MyCastomBaseViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
     serializer_class = TitleSerializer
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = LimitOffsetPagination
@@ -109,7 +95,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         IsAuthenticatedOrReadOnly
     )
     pagination_class = LimitOffsetPagination
-    filter_backends = set()
 
     def get_queryset(self):
         # title_id = self.kwargs.get('title_id')
@@ -149,6 +134,6 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(
                 user, data=request.data, partial=True
             )
-            if serializer.is_valid():
+            if serializer.is_valid(raise_exception=True):
                 serializer.save()
         return Response(serializer.data)

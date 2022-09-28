@@ -12,18 +12,6 @@ User = get_user_model()
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # if User.objects.exists():
-        #     raise Exception('Таблица `Users` не пуста!')
-        # if Review.objects.exists():
-        #     raise Exception('Таблица `Review` не пуста!')
-        # if Comments.objects.exists():
-        #     raise Exception('Таблица `Comments` не пуста!')
-        # if Category.objects.exists():
-        #     raise Exception('Таблица `Category` не пуста!')
-        # if Genre.objects.exists():
-        #     raise Exception('Таблица `Genre` не пуста!')
-        # if Title.objects.exists():
-        #     raise Exception('Таблица `Titles` не пуста!')
 
         Comments.objects.all().delete()
         Review.objects.all().delete()
@@ -44,11 +32,8 @@ class Command(BaseCommand):
         )
 
     def import_db(self, table, file_path):
-        # counter = 0
-        with open(file_path, encoding="utf8") as file:
+        with open(file_path, encoding='utf8') as file:
             reader = csv.reader(file)
             columns = next(reader)
             for row in reader:
                 table.objects.create(**dict(zip(columns, row)))
-                # counter += 1
-        # print(f'{table} added columns: {counter}')
