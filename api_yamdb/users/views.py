@@ -1,3 +1,4 @@
+from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
@@ -38,23 +39,15 @@ class RegistrationAPIView(APIView):
     """
     permission_classes = (AllowAny,)
 
-    # @staticmethod
-    # def _send_email(data):
-    #     email = EmailMessage(
-    #         subject=data['mail_subject'],
-    #         body=data['email_info'],
-    #         to=[data['to_email']]
-    #     )
-    #     email.send()
-
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        confirmation_code = default_token_generator.make_token(user)
         email_info = (
             f'Здравствуйте {user.username}'
             f'\n Ваш проверочный код для завершения регистрации:'
-            f'{user.confirmation_code}'
+            f'{confirmation_code}'
         )
         data = {
             'email_info': email_info,

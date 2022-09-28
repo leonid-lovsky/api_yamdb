@@ -61,11 +61,11 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
 
-@receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        confirmation_code = default_token_generator.make_token(
-            instance
-        )
-        instance.confirmation_code = confirmation_code
-        instance.save()
+# @receiver(post_save, sender=User)
+# def create_or_update_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         confirmation_code = default_token_generator.make_token(
+#             instance
+#         )
+#         instance.confirmation_code = confirmation_code
+#         instance.save()
