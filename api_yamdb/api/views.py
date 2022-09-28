@@ -6,7 +6,7 @@ from rest_framework import filters, mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404
-from rest_framework.pagination import LimitOffsetPagination
+from .pagination import PagePagination
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     IsAuthenticated
@@ -28,6 +28,7 @@ from .serializers import (
     UserSerializer,
 )
 from .filters import TitleFilter
+from .pagination import PagePagination
 
 User = get_user_model()
 
@@ -38,7 +39,7 @@ class MyCastomBaseViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet):
     permission_classes = (IsAdminOrReadOnly,)
-    pagination_class = LimitOffsetPagination
+    pagination_class = PagePagination
     filter_backends = (SearchFilter,)
     search_fields = ('name',)
     lookup_field = 'slug'
@@ -57,7 +58,7 @@ class GenreViewSet(MyCastomBaseViewSet):
 class TitleViewSet(viewsets.ModelViewSet):
     serializer_class = TitleSerializer
     permission_classes = (IsAdminOrReadOnly,)
-    pagination_class = LimitOffsetPagination
+    pagination_class = PagePagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
 
@@ -73,7 +74,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         IsAuthorModeratorAdminOrReadOnly,
         IsAuthenticatedOrReadOnly
     )
-    pagination_class = LimitOffsetPagination
+    pagination_class = PagePagination
     filter_backends = set()
 
     def get_queryset(self):
@@ -94,7 +95,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         IsAuthorModeratorAdminOrReadOnly,
         IsAuthenticatedOrReadOnly
     )
-    pagination_class = LimitOffsetPagination
+    pagination_class = PagePagination
 
     def get_queryset(self):
         title_id = self.kwargs.get('title_id')
@@ -115,7 +116,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAdmin,)
-    pagination_class = LimitOffsetPagination
+    pagination_class = PagePagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
     lookup_field = 'username'

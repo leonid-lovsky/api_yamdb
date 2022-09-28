@@ -1,5 +1,6 @@
 from django.core.mail import EmailMessage
 from rest_framework import status
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -18,13 +19,7 @@ class GetTokenAPIView(APIView):
         serializer = GetTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-        try:
-            user = User.objects.get(username=data['username'])
-        except User.DoesNotExist:
-            return Response(
-                {'username': 'Пользователя с таким именем не существует'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+        user = get_object_or_404(User, username=data['username'])
         if data.get('confirmation_code') == user.confirmation_code:
             token = RefreshToken.for_user(user).access_token
             return Response(
@@ -43,14 +38,14 @@ class RegistrationAPIView(APIView):
     """
     permission_classes = (AllowAny,)
 
-    @staticmethod
-    def send_email(data):
-        email = EmailMessage(
-            subject=data['mail_subject'],
-            body=data['email_info'],
-            to=[data['to_email']]
-        )
-        email.send()
+    # @staticmethod
+    # def _send_email(data):
+    #     email = EmailMessage(
+    #         subject=data['mail_subject'],
+    #         body=data['email_info'],
+    #         to=[data['to_email']]
+    #     )
+    #     email.send()
 
     def post(self, request):
         serializer = RegistrationSerializer(data=request.data)
@@ -66,5 +61,13 @@ class RegistrationAPIView(APIView):
             'to_email': user.email,
             'mail_subject': 'Код подтверждения для регистрации на сайте YaMDB'
         }
-        self.send_email(data)
+        self._send_email(data)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def _send_email(self, data):
+        email = EmailMessage(
+            subject=data['mail_subject'],
+            body=data['email_info'],
+            to=[data['to_email']]
+        )
+        email.send()
