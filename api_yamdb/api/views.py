@@ -97,17 +97,17 @@ class CommentViewSet(viewsets.ModelViewSet):
     pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
-        # title_id = self.kwargs.get('title_id')
+        title_id = self.kwargs.get('title_id')
         review_id = self.kwargs.get('review_id')
-        # title = get_object_or_404(Title, pk=title_id)
-        review = get_object_or_404(Review, pk=review_id)
+        title = get_object_or_404(Title, pk=title_id)
+        review = get_object_or_404(Review, pk=review_id, title=title)
         return Comments.objects.filter(review=review)
 
     def perform_create(self, serializer):
-        # title_id = self.kwargs.get('title_id')
+        title_id = self.kwargs.get('title_id')
         review_id = self.kwargs.get('review_id')
-        # title = get_object_or_404(Title, pk=title_id)
-        review = get_object_or_404(Review, pk=review_id)
+        title = get_object_or_404(Title, pk=title_id)
+        review = get_object_or_404(Review, pk=review_id, title=title)
         serializer.save(author=self.request.user, review=review)
 
 
@@ -134,6 +134,6 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(
                 user, data=request.data, partial=True
             )
-            if serializer.is_valid(raise_exception=True):
-                serializer.save()
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
         return Response(serializer.data)
