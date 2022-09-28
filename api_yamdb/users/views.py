@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from rest_framework import status
@@ -7,14 +8,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
-
 from .serializers import RegistrationSerializer, GetTokenSerializer
+
+User = get_user_model()
 
 
 class GetTokenAPIView(APIView):
     """
-    Описание класса. # TODO
+    Получить/обновить токен.
     """
     def post(self, request):
         serializer = GetTokenSerializer(data=request.data)

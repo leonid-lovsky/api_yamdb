@@ -71,3 +71,51 @@ python manage.py runserver
 python3 manage.py runserver
 ```
 После запуска по адресу http://127.0.0.1:8000/redoc/ доступна документация проекта.
+
+## Примеры запросов:
+1. Запрос на регистрацию пользователя (POST-запрос):
+http://127.0.0.1:8000/api/v1/auth/signup/
+2. Запрос на получение JWT-токена (POST-запрос):
+http://127.0.0.1:8000/api/v1/auth/token/
+3. Запрос на получение списка всех категорий (GET-запрос):
+http://127.0.0.1:8000/api/v1/categories/
+4. Запрос на добавление новой категории (POST-запрос):
+http://127.0.0.1:8000/api/v1/categories/
+5. Запрос на удаление категории (DELETE-запрос):
+http://127.0.0.1:8000/api/v1/categories/{slug}/
+6. Запрос на получение списка всех жанров (GET-запрос):
+http://127.0.0.1:8000/api/v1/genres/
+7. Запрос на добавление жанра (POST-запрос):
+http://127.0.0.1:8000/api/v1/genres/
+8. Запрос на удаление жанра (DELETE-запрос):
+http://127.0.0.1:8000/api/v1/genres/{slug}/
+9. Запрос на получение списка всех произведений (GET-запрос):
+http://127.0.0.1:8000/api/v1/titles/
+10. Запрос на добавление произведения (POST-запрос):
+http://127.0.0.1:8000/api/v1/titles/
+11. Запрос на получение информации о произведении (GET-запрос):
+http://127.0.0.1:8000/api/v1/titles/{titles_id}/
+12. Запрос на частичное обновление информации о произведении (PATCH-запрос):
+http://127.0.0.1:8000/api/v1/titles/{titles_id}/
+12. Запрос на удаление произведения (DELETE-запрос):
+http://127.0.0.1:8000/api/v1/titles/{titles_id}/
+13. Запрос на получение списка всех отзывов (GET-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/
+14. Запрос на добавление нового отзыва (POST-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/
+15. Запрос на получение конкретного отзыва (GET-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/
+16. Запрос на частичное обновление конкретного отзыва (PATCH-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/
+17. Запрос на удаление конкретного отзыва (DELETE-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/
+18. Запрос на получение списка всех комментариев (GET-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/
+19. Запрос на добавление комментария к отзыву (POST-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/
+20. Запрос на получение конкретного комментария (GET-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/
+21. Запрос на частичное обновление комментария (PATCH-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/
+22. Запрос на удаление комментария (DELETE-запрос):
+http://127.0.0.1:8000/api/v1/titles/{title_id}/reviews/{review_id}/comments/{comment_id}/
