@@ -1,19 +1,11 @@
-import datetime
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.core.exceptions import ValidationError
 from django.db import models
+
+from .validators import validate_year
 
 NUMBER_OF_SYMBOLS = 20
 User = get_user_model()
-
-
-def validate_year(value):
-    if value > datetime.datetime.now().year:
-        raise ValidationError(
-            ('%(value)s превышает текущее значение. Введите корректный год'),
-            params={'value': value},
-        )
 
 
 class Category(models.Model):

@@ -55,10 +55,11 @@ class RegistrationAPIView(APIView):
             'to_email': user.email,
             'mail_subject': 'Код подтверждения для регистрации на сайте YaMDB'
         }
-        self._send_email(data)
+        self.__send_email(data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def _send_email(self, data):
+    @staticmethod
+    def __send_email(data):
         email = EmailMessage(
             subject=data['mail_subject'],
             body=data['email_info'],

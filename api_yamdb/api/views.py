@@ -1,11 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, viewsets
+from rest_framework import filters, viewsets
 from rest_framework.decorators import action
-from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404
-from .pagination import PagePagination
 from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
     IsAuthenticated
@@ -28,30 +26,17 @@ from .serializers import (
 )
 from .filters import TitleFilter
 from .pagination import PagePagination
+from .mixins import MyCustomBaseViewSet
 
 User = get_user_model()
 
 
-class MyCastomBaseViewSet(
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet
-):
-
-    permission_classes = (IsAdminOrReadOnly,)
-    pagination_class = PagePagination
-    filter_backends = (SearchFilter,)
-    search_fields = ('name',)
-    lookup_field = 'slug'
-
-
-class CategoryViewSet(MyCastomBaseViewSet):
+class CategoryViewSet(MyCustomBaseViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-class GenreViewSet(MyCastomBaseViewSet):
+class GenreViewSet(MyCustomBaseViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
