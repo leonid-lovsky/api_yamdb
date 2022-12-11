@@ -29,9 +29,9 @@
 1. Клонировать репозиторий и перейти в него в командной строке:
 ```
 # Клонирование репозитория
-git clone git@github.com:Sergey2107/api_yamdb.git
+git clone https://github.com/leonid-lovsky/YaMDb-API.git
 # Переход в корневую директорию репозитория
-cd api_final_yatube
+cd YaMDb-API
 ```
 2. Cоздать и активировать виртуальное окружение:
 ```
