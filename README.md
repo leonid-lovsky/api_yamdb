@@ -8,20 +8,20 @@
 Пользователи могут оставлять комментарии под отзывами.
 Произведениям может быть присвоен жанр (_из списка предустановленных_).
 
-## Авторы проекта 
+## Авторы 
 - Сергей Тюрников
 - Леонид Ловский
 - Константин Шперлинг
 
-## Технологии в проекте
-— django==2.2.16
-— djangorestframework==3.12.4
-— PyJWT==2.1.0
-— pytest==6.2.4
-— pytest-django==4.4.0
-— pytest-pythonpath==0.7.3
-— djangorestframework-simplejwt==5.2.0
-— django-filter==21.1
+## Зависимости
+- django==2.2.16
+- djangorestframework==3.12.4
+- PyJWT==2.1.0
+- pytest==6.2.4
+- pytest-django==4.4.0
+- pytest-pythonpath==0.7.3
+- djangorestframework-simplejwt==5.2.0
+- django-filter==21.1
 
 ## Установка
 Клонировать репозиторий и перейти в него в командной строке:
