@@ -29,7 +29,7 @@
 1. Клонировать репозиторий и перейти в него в командной строке:
 ```
 # Клонирование репозитория
-git clone https://github.com/leonid-lovsky/api_yamdb
+git clone https://github.com/leonid-lovsky/api_yamdb.git
 # Переход в корневую директорию репозитория
 cd api_yamdb
 ```
