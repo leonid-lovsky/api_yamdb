@@ -45,6 +45,8 @@ class RegistrationAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         confirmation_code = default_token_generator.make_token(user)
+        user.confirmation_code = confirmation_code
+        user.save()
         email_info = (
             f'Здравствуйте {user.username}'
             f'\n Ваш проверочный код для завершения регистрации:'
